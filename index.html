@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+  <style type="text/css">
+		*{
+			margin:0;
+			padding:0;
+		}
+		body{
+			background:#000;
+		}
+		#wrap{
+			perspective:800px;
+		}
+		.box{
+			position:relative;
+			width:120px;
+			height:180px;
+			margin:250px auto;
+			border-radius:5px;
+			transform-style:preserve-3d;
+			transform:rotateX(-15deg) rotateY(0deg);
+		}
+		.box li{
+			width:133px;
+			height:200px;
+			position:absolute;
+			list-style:none;
+			box-shadow:0 0 8px #f9f;
+			transform:rotateY(0deg) translateZ(0deg);
+		}
+		.box li img{
+			-webkit-box-reflect:below 5px -webkit-linear-gradient(top,rgba(0,0,0,0) 30%,rgba(0,0,0,.5) 100%);
+		}
+		.box p{
+			width:1200px;
+			height:1200px;
+			border-radius:100%;
+			background:-webkit-radial-gradient(center,600px 600px,rgba(244,23,234,0.2),rgba(0,0,0,0));
+			position:absolute;
+			top:112%;
+			left:50%;
+			margin-left:-600px;
+			margin-top:-600px;
+			transform:rotateX(90deg);
+		}
+  </style>
+ </head>
+ <body>
+		<div id='wrap'>
+			<div class='box'>
+				<li><img src="img/1.jpg" alt="" /></li>
+				<li><img src="img/2.jpg" alt="" /></li>
+				<li><img src="img/3.jpg" alt="" /></li>
+				<li><img src="img/4.jpg" alt="" /></li>
+				<li><img src="img/5.jpg" alt="" /></li>
+				<li><img src="img/6.jpg" alt="" /></li>
+				<li><img src="img/7.jpg" alt="" /></li>
+				<li><img src="img/8.jpg" alt="" /></li>
+				<li><img src="img/9.jpg" alt="" /></li>
+				<li><img src="img/10.jpg" alt="" /></li>
+				<li><img src="img/11.jpg" alt="" /></li>
+				<p></p>
+			</div>
+		</div>
+		<script type="text/javascript">
+			window.onload=function(){
+				var aBox=document.getElementsByClassName('box')[0];
+				var oLi=aBox.getElementsByTagName('li');
+				var liLength=oLi.length;
+				var Deg=360/liLength;
+				var lastX,lastY,nowX,nowY,minusX,minusY;
+				var roX=-15,roY=0;
+				for (var i=0;i<liLength;i++){
+					oLi[i].style.transform='rotateY('+i*Deg+'deg) translateZ(350px)';
+					oLi[i].style.transition = 'transform 1s '+ (liLength-1-i)*0.1 +'s';
+				}
+				document.onmousedown=function(ev){
+					ev=ev||window.event;
+					lastX=ev.clientX;
+					lastY=ev.clientY;
+					
+
+					this.onmousemove=function(ev){
+						ev=ev||window.event;
+						nowX=ev.clientX;
+						nowY=ev.clientY;
+						minusX=nowX-lastX;
+						minusY=nowY-lastY;
+						roY += minusX*0.2;
+						roX -= minusY*0.1;
+						aBox.style.transform='rotateX('+roX+'deg) rotateY('+roY+'deg)';
+
+						lastX=nowX;
+						lastY=nowY;
+						
+					}
+					this.onmouseup=function(){
+						this.onmousemove=null;
+						var timer=setInterval(function(){
+							minusX*=0.95;
+							minusY*=0.95;
+							roY += minusX*0.2;
+							roX -= minusY*0.1;
+							aBox.style.transform='rotateX('+roX+'deg) rotateY('+roY+'deg)';
+							if(Math.abs(minusX)<0.1&&Math.abs(minusY)<0.1){
+								clearInterval(timer);
+							}
+						},13);
+					}
+					return false;
+				}
+			}
+		</script>
+ </body>
+</html>
